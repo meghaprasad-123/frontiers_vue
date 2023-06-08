@@ -1,0 +1,16 @@
+@import '/src/assets/styles/base.scss';
+
+section {
+  margin: 3.25rem 5.625rem;
+}
+.mainbox {
+  margin-top: 3.8rem;
+  display: flex;
+  gap: 8.125rem;
+}
+
+@media (max-width: 1024px) {
+  .mainbox {
+    flex-wrap: wrap;
+  }
+}

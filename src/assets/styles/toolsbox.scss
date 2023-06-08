@@ -1,0 +1,44 @@
+@import '/src/assets/styles/base.scss';
+
+.col2 {
+  width: 30%;
+
+  h2 {
+    color: $last-color;
+    font: 1.4rem $font-common;
+  }
+
+  .line {
+    width: 50px;
+    height: 3px;
+    background: $primary-color;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+}
+
+.boxes {
+  margin-top: 25px;
+
+  .box {
+    padding: 16px;
+    @include flexBetween();
+    background: white;
+    width: 91%;
+    margin-bottom: 7px;
+
+    svg {
+      width: 22px;
+    }
+  }
+
+  .box-cont {
+    line-height: 20px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .col2 {
+    width: 100%;
+  }
+}

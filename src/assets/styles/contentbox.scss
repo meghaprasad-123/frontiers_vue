@@ -1,0 +1,127 @@
+@import '/src/assets/styles/base.scss';
+
+.col1 {
+  width: 70%;
+}
+
+.col1 h1 {
+  font-weight: bold;
+  color: $last-color;
+  font-size: 33px;
+}
+
+.options {
+  height: 32px;
+  white-space: nowrap;
+  overflow-x: hidden;
+  list-style: none;
+  gap: 2.5rem;
+  margin-top: 15px;
+  border-bottom: 1px solid rgb(24 24 24 / 75%);
+  position: relative;
+  @include flexCenter();
+
+  li {
+    display: flex;
+    gap: 1.8rem;
+
+    button {
+      border: none;
+      color: #6b6b6b !important;
+      font-weight: 500;
+      font: 1rem $font-common;
+      margin-bottom: 3px;
+    }
+  }
+}
+
+.dots {
+  border: none;
+  background: transparent;
+
+  svg {
+    height: 25px;
+  }
+}
+
+.shadow {
+  background: linear-gradient(90deg, transparent 0, #f7f7f7 44.44%);
+  padding-left: 2rem;
+  position: absolute;
+  z-index: 99;
+  right: 0px;
+  top: 0px;
+
+  #saved {
+    min-width: 55px !important;
+    padding: 0;
+    border: 0.7px solid #0000007a;
+    border-radius: 10px;
+    background: white;
+
+    svg {
+      width: 20px;
+      padding: 0;
+    }
+  }
+}
+
+a {
+  text-decoration: none;
+}
+
+.content {
+  display: flex;
+  margin-top: 2.75rem;
+  gap: 2.1875rem;
+}
+
+.pic {
+  min-width: 7.8125rem;
+  height: 7.8125rem;
+  border-radius: 76px;
+  background: white;
+  justify-content: center;
+  @include flexCenter();
+
+  img {
+    min-width: 4.375rem;
+    height: 4.375rem;
+  }
+}
+
+.notes {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  h2 {
+    color: $last-color;
+    font: 1.3rem $font-common;
+  }
+
+  p {
+    line-height: 25px !important;
+    font: 14px $font-common;
+  }
+}
+
+.label svg {
+  width: 20px;
+  height: 20px;
+}
+
+.bookmarked {
+  fill: blue;
+}
+
+@media (max-width: 1024px) {
+  .col1 {
+    width: 100%;
+  }
+}
+@media (max-width: 420px) {
+  .content {
+    flex-wrap: wrap;
+  }
+}

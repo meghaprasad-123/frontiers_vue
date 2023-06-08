@@ -1,0 +1,53 @@
+@import '/src/assets/styles/base.scss';
+
+section {
+  margin: 3.25rem 5.625rem;
+}
+
+.searchbox {
+  display: flex;
+  background: #ffffff;
+  padding: 1.25rem;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d5d5d5;
+
+  svg {
+    width: 1.875rem;
+    height: 1.875rem;
+  }
+
+  input {
+    border: none;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+#searchtext {
+  letter-spacing: 0.0625rem;
+  color: #a7a6a6;
+  opacity: 0;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+  height: 0;
+}
+
+.searchbox:hover + #searchtext {
+  opacity: 1;
+  transition: box-shadow 0.5s cubic-bezier(0.37, 0.74, 0.15, 1);
+}
+
+@media (max-width: 768px) {
+  section {
+    margin: 20px 20px;
+  }
+}
+@media (max-width: 425px) {
+  section {
+    margin: 1.8rem !important;
+  }
+}
