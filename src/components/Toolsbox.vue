@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Ref } from 'vue'
 
-interface tools {
+interface tool {
   category: string
   title: string
 }
-const tools: Ref<tools[]> = [
+const tools: Ref<tool[]> = [
   {
     category: 'ADVANCED SETTINGS',
     title: 'Terminology'
@@ -30,7 +30,7 @@ const tools: Ref<tools[]> = [
     <h2>My tools</h2>
     <div class="line"></div>
     <div class="boxes">
-      <div class="box" v-for="tool in tools">
+      <div class="box" v-for="tool in tools" :key="tool.title">
         <div class="box-cont">
           <h6>{{ tool.category }}</h6>
           <h4>{{ tool.title }}</h4>

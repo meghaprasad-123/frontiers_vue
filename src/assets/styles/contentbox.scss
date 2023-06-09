@@ -94,6 +94,7 @@ a {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 80%;
 
   h2 {
     color: $last-color;
@@ -103,6 +104,7 @@ a {
   p {
     line-height: 25px !important;
     font: 14px $font-common;
+    text-align: justify;
   }
 }
 
@@ -123,5 +125,11 @@ a {
 @media (max-width: 420px) {
   .content {
     flex-wrap: wrap;
+  }
+  .notes{
+    width:100% ;
+  }
+  .pic{
+    margin: auto;
   }
 }

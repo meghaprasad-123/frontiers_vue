@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, provide, ref } from 'vue'
 import axios from 'axios'
 import { useSearchStore } from '../stores/search'
 import { Ref } from 'vue'
+import { RouterLink } from 'vue-router'
 
 const store = useSearchStore()
 
@@ -21,6 +22,11 @@ axios
   })
 
 const segments = ref([])
+
+
+//for providing
+const provideData = ref ( segments.value);
+provide('data',provideData)
 
 //segments
 
@@ -184,67 +190,67 @@ const searchData = computed(() => {
 })
 
 //redirection
-const redirection = (item: any) => {
-  const detailPage = window.open('')
-  if (detailPage) {
-    const html = `
-  <html>
-      <head>
-      <title>${item.productName}</title>
-      </head>
-  <style>
-        body {
-          margin: 0;
-          padding: 1rem;
-          font-family: Arial, sans-serif;
-          background-color: #f0f8ff;
-        }
+// const redirection = (item: any) => {
+//   const detailPage = window.open('')
+//   if (detailPage) {
+//     const html = `
+//   <html>
+//       <head>
+//       <title>${item.productName}</title>
+//       </head>
+//   <style>
+//         body {
+//           margin: 0;
+//           padding: 1rem;
+//           font-family: Arial, sans-serif;
+//           background-color: #f0f8ff;
+//         }
 
-        .details{
-            width:50%;
-          background-color: #ffffff;
-          border-radius: 12px;
-          box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-          padding: 3rem;
-          margin: auto;
-        }
+//         .details{
+//             width:50%;
+//           background-color: #ffffff;
+//           border-radius: 12px;
+//           box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+//           padding: 3rem;
+//           margin: auto;
+//         }
 
-        img {
-              width: 100px;
-              height: 100px;
-        }
+//         img {
+//               width: 100px;
+//               height: 100px;
+//         }
 
-      .title{
-      font-size: 1rem;
-      font-weight: bold;
-      margin-top:10px;
-      }
+//       .title{
+//       font-size: 1rem;
+//       font-weight: bold;
+//       margin-top:10px;
+//       }
 
-      </style>
+//       </style>
 
-    </head>
+//     </head>
 
-    <body>
+//     <body>
 
-      <div class="details">
-          <img src="${displayImage(item.segmentId)}" alt="${item.productName}" />
-          <div class="title">${displayTitle(item.segmentId)}</div>
-          <h1>${item.productName}</h1>
-           <p>${item.description}</p>
-      </div>
+//       <div class="details">
+//           <img src="${displayImage(item.segmentId)}" alt="${item.productName}" />
+//           <div class="title">${displayTitle(item.segmentId)}</div>
+//           <h1>${item.productName}</h1>
+//            <p>${item.description}</p>
+//       </div>
 
-    </body>
-  </html>
+//     </body>
+//   </html>
 
-`
-    detailPage.document.write(html)
-    window.addEventListener('beforeunload', () => {
-      if (detailPage) {
-        detailPage.close()
-      }
-    })
-  }
-}
+// `
+//     detailPage.document.write(html)
+//     window.addEventListener('beforeunload', () => {
+//       if (detailPage) {
+//         detailPage.close()
+//       }
+//     })
+//   }
+// }
 </script>
 
 <template>
@@ -321,16 +327,16 @@ const redirection = (item: any) => {
       <div v-for="item in searchData" class="content">
         <div class="pic">
           <img
-            @click="redirection(item)"
+            
             :src="displayImage(item.segmentId)"
             alt="${data.productName}"
           />
         </div>
         <div class="notes">
-          <h6 @click="redirection(item)" :class="displayTitle(item.segmentId)">
+          <h6 :class="displayTitle(item.segmentId)">
             {{ displayTitle(item.segmentId) }}
           </h6>
-          <h2 @click="redirection(item)">{{ item.productName }}</h2>
+          <h2 router-link :to="{ name: 'productDetails', params: { id: item } }">{{ item.productName }}</h2>
 
           <p>{{ item.description }}</p>
         </div>

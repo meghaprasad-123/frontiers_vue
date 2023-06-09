@@ -5,19 +5,7 @@ export const useSearchStore = defineStore('search', {
     searchQuery: ''
   }),
 
-  // actions: {
-  //   setSearchQuery(query: string) {
-  //     this.searchQuery = query
-  //   }
-  // },
-
-
-
-  // getters: {
-  //   getSearchQuery(): string {
-  //     return this.searchQuery
-  //   }
-  // }
+  
   actions: {
     setSearchQuery(query: string) {
       if (query.length > 3) {
