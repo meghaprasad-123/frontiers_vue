@@ -1,28 +1,19 @@
+import { ref, computed } from 'vue'
+
 import { defineStore } from 'pinia'
 
-export const useSearchStore = defineStore('search', {
-  state: () => ({
-    searchQuery: ''
-  }),
+export const useSearchStore = defineStore('search', () => {
+  const searchQuery = ref('')
 
-  
-  actions: {
-    setSearchQuery(query: string) {
-      if (query.length > 3) {
-        this.searchQuery = query
-      } else {
-        this.searchQuery = ''
-      }
-    }
-  },
+  const getSearchQuery = computed(() => searchQuery.value)
 
-  getters: {
-    getSearchQuery(): string {
-      return this.searchQuery
-    },
-    
-    isSearchValid(): boolean {
-      return this.searchQuery.length >3
+  function setSearchQuery(query: string) {
+    if (query.length >= 3) {
+      searchQuery.value = query
+    } else {
+      searchQuery.value = ''
     }
   }
+
+  return { useSearchStore, getSearchQuery, setSearchQuery }
 })

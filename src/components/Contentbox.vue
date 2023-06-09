@@ -23,10 +23,9 @@ axios
 
 const segments = ref([])
 
-
 //for providing
-const provideData = ref ( segments.value);
-provide('data',provideData)
+const provideData = ref(segments.value)
+provide('data', provideData)
 
 //segments
 
@@ -111,17 +110,10 @@ function displayTitle(segmentId: String) {
 }
 
 //bookmark fntn
-interface savedData {
-  productName: string
-  productId: string
-  description: string
-  segmentId: string
-}
-
 function booked(event, data: any) {
   event.preventDefault()
-  const savedData: savedData = JSON.parse(localStorage.getItem('savedData')) || []
-  const index = savedData.findIndex((item: savedData) => item.productId === data.productId)
+  const savedData = JSON.parse(localStorage.getItem('savedData')) || []
+  const index = savedData.findIndex((item) => item.productId === data.productId)
 
   if (index !== -1) {
     savedData.splice(index, 1)
@@ -189,68 +181,7 @@ const searchData = computed(() => {
   return segmentData.value.filter((item) => item.productName.toLowerCase().includes(query))
 })
 
-//redirection
-// const redirection = (item: any) => {
-//   const detailPage = window.open('')
-//   if (detailPage) {
-//     const html = `
-//   <html>
-//       <head>
-//       <title>${item.productName}</title>
-//       </head>
-//   <style>
-//         body {
-//           margin: 0;
-//           padding: 1rem;
-//           font-family: Arial, sans-serif;
-//           background-color: #f0f8ff;
-//         }
 
-//         .details{
-//             width:50%;
-//           background-color: #ffffff;
-//           border-radius: 12px;
-//           box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-//           padding: 3rem;
-//           margin: auto;
-//         }
-
-//         img {
-//               width: 100px;
-//               height: 100px;
-//         }
-
-//       .title{
-//       font-size: 1rem;
-//       font-weight: bold;
-//       margin-top:10px;
-//       }
-
-//       </style>
-
-//     </head>
-
-//     <body>
-
-//       <div class="details">
-//           <img src="${displayImage(item.segmentId)}" alt="${item.productName}" />
-//           <div class="title">${displayTitle(item.segmentId)}</div>
-//           <h1>${item.productName}</h1>
-//            <p>${item.description}</p>
-//       </div>
-
-//     </body>
-//   </html>
-
-// `
-//     detailPage.document.write(html)
-//     window.addEventListener('beforeunload', () => {
-//       if (detailPage) {
-//         detailPage.close()
-//       }
-//     })
-//   }
-// }
 </script>
 
 <template>
@@ -326,17 +257,15 @@ const searchData = computed(() => {
     <div class="contents">
       <div v-for="item in searchData" class="content">
         <div class="pic">
-          <img
-            
-            :src="displayImage(item.segmentId)"
-            alt="${data.productName}"
-          />
+          <img :src="displayImage(item.segmentId)" alt="${data.productName}" />
         </div>
         <div class="notes">
           <h6 :class="displayTitle(item.segmentId)">
             {{ displayTitle(item.segmentId) }}
           </h6>
-          <h2 router-link :to="{ name: 'productDetails', params: { id: item } }">{{ item.productName }}</h2>
+          <h2 router-link :to="{ name: 'productDetails', params: { id: item } }">
+            {{ item.productName }}
+          </h2>
 
           <p>{{ item.description }}</p>
         </div>
