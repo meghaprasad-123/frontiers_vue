@@ -5,21 +5,21 @@
 }
 
 .col1 h1 {
-  font-weight: bold;
   color: $last-color;
+  font-weight: bold;
   font-size: 33px;
 }
 
 .options {
-  height: 32px;
-  white-space: nowrap;
-  overflow-x: hidden;
-  list-style: none;
-  gap: 2.5rem;
-  margin-top: 15px;
-  border-bottom: 1px solid rgb(24 24 24 / 75%);
-  position: relative;
   @include flexCenter();
+  border-bottom: 1px solid rgb(24 24 24 / 75%);
+  gap: 2.5rem;
+  height: 32px;
+  list-style: none;
+  margin-top: 15px;
+  overflow-x: hidden;
+  position: relative;
+  white-space: nowrap;
 
   li {
     display: flex;
@@ -48,20 +48,20 @@
   background: linear-gradient(90deg, transparent 0, #f7f7f7 44.44%);
   padding-left: 2rem;
   position: absolute;
-  z-index: 99;
   right: 0px;
   top: 0px;
+  z-index: 99;
 
   #saved {
-    min-width: 55px !important;
-    padding: 0;
     border: 0.7px solid #0000007a;
     border-radius: 10px;
     background: white;
+    min-width: 55px !important;
+    padding: 0;
 
     svg {
-      width: 20px;
       padding: 0;
+      width: 20px;
     }
   }
 }
@@ -72,21 +72,21 @@ a {
 
 .content {
   display: flex;
-  margin-top: 2.75rem;
   gap: 2.1875rem;
+  margin-top: 2.75rem;
 }
 
 .pic {
-  min-width: 7.8125rem;
-  height: 7.8125rem;
+  @include flexCenter();
   border-radius: 76px;
   background: white;
+  height: 7.8125rem;
   justify-content: center;
-  @include flexCenter();
+  min-width: 7.8125rem;
 
   img {
-    min-width: 4.375rem;
     height: 4.375rem;
+    min-width: 4.375rem;
   }
 }
 
@@ -96,25 +96,49 @@ a {
   gap: 8px;
   width: 80%;
 
+  a {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+  }
+
+  h6 {
+    color: $last-color;
+  }
   h2 {
     color: $last-color;
     font: 1.3rem $font-common;
   }
 
   p {
-    line-height: 25px !important;
+    color: #666666;
     font: 14px $font-common;
+    line-height: 25px !important;
     text-align: justify;
   }
 }
 
 .label svg {
-  width: 20px;
   height: 20px;
+  width: 20px;
 }
 
 .bookmarked {
   fill: blue;
+}
+.no-results {
+  display: flex;
+  flex-direction: row;
+  p {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 30px;
+
+    svg {
+      height: 20px;
+      width: 25px;
+    }
+  }
 }
 
 @media (max-width: 1024px) {

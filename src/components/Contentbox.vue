@@ -6,7 +6,6 @@ import { Ref } from 'vue'
 import { RouterLink } from 'vue-router'
 
 const store = useSearchStore()
-
 const searchQuery = computed(() => store.getSearchQuery)
 
 //axios
@@ -22,10 +21,6 @@ axios
   })
 
 const segments = ref([])
-
-//for providing
-const provideData = ref(segments.value)
-provide('data', provideData)
 
 //segments
 
@@ -109,9 +104,28 @@ function displayTitle(segmentId: String) {
   return segmentTitle ? segmentTitle.displayName : ''
 }
 
+
 //bookmark fntn
+document.addEventListener('DOMContentLoaded', () => {
+  const savedData = JSON.parse(localStorage.getItem('savedData')) || [];
+  const elements = document.querySelectorAll('[data-product-id]');
+
+  elements.forEach((element) => {
+    const productId = element.getAttribute('data-product-id');
+    const data = { productId };
+    const currentBookmarked = bookMarked(data);
+
+    if (currentBookmarked) {
+      element.classList.add('bookmarked');
+    } else {
+      element.classList.remove('bookmarked');
+    }
+  });
+});
+
+
 function booked(event, data: any) {
-  event.preventDefault()
+  event.preventDefault();
   const savedData = JSON.parse(localStorage.getItem('savedData')) || []
   const index = savedData.findIndex((item) => item.productId === data.productId)
 
@@ -128,19 +142,18 @@ function booked(event, data: any) {
     element.classList.toggle('bookmarked')
   })
 
-  const bookingIcon = event.target
+  
 
-  bookingIcon.classList.toggle('bookmarked')
 
-  const currentBookmarked = bookMarked(data)
-
-  console.log('Bookmarked:', currentBookmarked)
+  const bookingIcon = event.currentTarget;
+  const currentBookmarked = bookMarked(data);
 
   if (currentBookmarked) {
-    event.target.classList.add('bookmarked')
+    bookingIcon.classList.add('bookmarked');
   } else {
-    event.target.classList.remove('bookmarked')
+    bookingIcon.classList.remove('bookmarked');
   }
+  
 }
 
 function bookMarked(data) {
@@ -180,8 +193,6 @@ const searchData = computed(() => {
   }
   return segmentData.value.filter((item) => item.productName.toLowerCase().includes(query))
 })
-
-
 </script>
 
 <template>
@@ -259,16 +270,32 @@ const searchData = computed(() => {
         <div class="pic">
           <img :src="displayImage(item.segmentId)" alt="${data.productName}" />
         </div>
-        <div class="notes">
-          <h6 :class="displayTitle(item.segmentId)">
-            {{ displayTitle(item.segmentId) }}
-          </h6>
-          <h2 router-link :to="{ name: 'productDetails', params: { id: item } }">
-            {{ item.productName }}
-          </h2>
 
-          <p>{{ item.description }}</p>
+        <div class="notes">
+          <router-link
+            :to="{
+              name: 'ProductDetails',
+              params: {
+                segmentId: displayTitle(item.segmentId),
+                segmentIcon: displayImage(item.segmentId),
+                segmentName: displayTitle(item.segmentId),
+                productName: item.productName,
+                description: item.description
+              }
+            }"
+            target="_blank"
+          >
+            <h6 :class="displayTitle(item.segmentId)">
+              {{ displayTitle(item.segmentId) }}
+            </h6>
+            <h2>
+              {{ item.productName }}
+            </h2>
+
+            <p>{{ item.description }}</p>
+          </router-link>
         </div>
+
         <div v-if="showLabel" class="label">
           <svg
             @click="booked($event, item)"
@@ -287,6 +314,27 @@ const searchData = computed(() => {
             />
           </svg>
         </div>
+      </div>
+
+      <div v-if="searchQuery && searchData.length === 0" class="no-results">
+        <p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+            />
+          </svg>
+
+          No matches to your query could be found. Try another search term.
+        </p>
       </div>
     </div>
   </div>

@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import { inject } from 'vue'
-import { ref } from 'vue'
+import { defineProps } from 'vue'
+import { useRoute } from 'vue-router'
 
-const injectedData = inject('data', ref([]))
+const props = defineProps(['segmentId', 'segmentIcon', 'productName', 'segmentName', 'description'])
+const route = useRoute()
+
+const img = route.params.segmentIcon
 </script>
 
 <template>
-  <div v-for="item in injectedData" :key="item.id" class="details">
-    <img src="displayImage(item.segmentId)" alt="${item.productName}" />
-    <div class="title">{{ item.segmentId }}</div>
-    <h1>{{ item.productName }}</h1>
-    <p>{{ item.description }}</p>
+  <div class="details">
+    <img :src="img" />
+    <div class="title">{{ route.params.segmentName }}</div>
+    <h1>{{ route.params.productName }}</h1>
+    <p>{{ route.params.description }}</p>
   </div>
 </template>
 
@@ -30,6 +33,10 @@ body {
     rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
   padding: 3rem;
   margin: auto;
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 img {

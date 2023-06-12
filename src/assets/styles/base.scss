@@ -8,18 +8,18 @@
 }
 
 $font-common: 'Raleway', sans-serif;
+$last-color: #282828;
 $primary-color: #000000;
 $secondary-color: #040404;
-$last-color: #282828;
 
 @mixin flexCenter {
-  display: flex;
   align-items: center;
+  display: flex;
 }
 @mixin flexBetween {
-  display: flex;
   align-items: center;
   justify-content: space-between;
+  display: flex;
 }
 
 body {
