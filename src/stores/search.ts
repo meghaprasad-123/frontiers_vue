@@ -15,7 +15,6 @@ export const useSearchStore = defineStore('search', () => {
     }
   }
 
-  const isSearchEmpty = computed(() => searchQuery.value.length === 0)
 
-  return { useSearchStore, getSearchQuery, setSearchQuery, isSearchEmpty }
+  return { useSearchStore, getSearchQuery, setSearchQuery }
 })

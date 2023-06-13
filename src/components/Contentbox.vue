@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, ref } from 'vue'
+import { computed, ref } from 'vue'
 import axios from 'axios'
 import { useSearchStore } from '../stores/search'
 import { Ref } from 'vue'
@@ -7,6 +7,7 @@ import { RouterLink } from 'vue-router'
 
 const store = useSearchStore()
 const searchQuery = computed(() => store.getSearchQuery)
+const isLoading = ref(true);
 
 //axios
 
@@ -14,10 +15,12 @@ axios
   .get('https://mocki.io/v1/6f46c778-2ec4-4690-9dcb-de755e0298e7')
   .then(function (response) {
     console.log(response.data)
-    segments.value = response.data
+    segments.value = response.data;
+    isLoading.value = false;
   })
   .catch(function (response) {
     console.log(response.error)
+    isLoading.value = false;
   })
 
 const segments = ref([])
@@ -106,25 +109,13 @@ function displayTitle(segmentId: String) {
 
 
 //bookmark fntn
-document.addEventListener('DOMContentLoaded', () => {
-  const savedData = JSON.parse(localStorage.getItem('savedData')) || [];
-  const elements = document.querySelectorAll('[data-product-id]');
-
-  elements.forEach((element) => {
-    const productId = element.getAttribute('data-product-id');
-    const data = { productId };
-    const currentBookmarked = bookMarked(data);
-
-    if (currentBookmarked) {
-      element.classList.add('bookmarked');
-    } else {
-      element.classList.remove('bookmarked');
-    }
-  });
-});
+function bookMarked(data) {
+  const storedData = JSON.parse(localStorage.getItem('savedData')) || []
+  return storedData.some((savedData) => savedData.productId === data.productId)
+}
 
 
-function booked(event, data: any) {
+function booked(event, data) {
   event.preventDefault();
   const savedData = JSON.parse(localStorage.getItem('savedData')) || []
   const index = savedData.findIndex((item) => item.productId === data.productId)
@@ -142,9 +133,6 @@ function booked(event, data: any) {
     element.classList.toggle('bookmarked')
   })
 
-  
-
-
   const bookingIcon = event.currentTarget;
   const currentBookmarked = bookMarked(data);
 
@@ -153,13 +141,10 @@ function booked(event, data: any) {
   } else {
     bookingIcon.classList.remove('bookmarked');
   }
-  
+ 
 }
 
-function bookMarked(data) {
-  const storedData = JSON.parse(localStorage.getItem('savedData')) || []
-  return storedData.some((savedData) => savedData.productId === data.productId)
-}
+
 
 //filtered contents
 const filterImage = ref(true)
@@ -266,6 +251,11 @@ const searchData = computed(() => {
     </ul>
 
     <div class="contents">
+      <div v-if="isLoading" class="loading-icon">
+        <img src="../assets/images/icons8-loading-64.png" alt="">
+      </div>
+
+       <div v-else>
       <div v-for="item in searchData" class="content">
         <div class="pic">
           <img :src="displayImage(item.segmentId)" alt="${data.productName}" />
@@ -315,6 +305,7 @@ const searchData = computed(() => {
           </svg>
         </div>
       </div>
+    </div>
 
       <div v-if="searchQuery && searchData.length === 0" class="no-results">
         <p>
