@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, provide, ref } from 'vue'
 import axios from 'axios'
 import { useSearchStore } from '../stores/search'
 import { Ref } from 'vue'
@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router'
 
 const store = useSearchStore()
 const searchQuery = computed(() => store.getSearchQuery)
-const isLoading = ref(true);
+const isLoading = ref(true)
 
 //axios
 
@@ -15,12 +15,12 @@ axios
   .get('https://mocki.io/v1/6f46c778-2ec4-4690-9dcb-de755e0298e7')
   .then(function (response) {
     console.log(response.data)
-    segments.value = response.data;
-    isLoading.value = false;
+    segments.value = response.data
+    isLoading.value = false
   })
   .catch(function (response) {
     console.log(response.error)
-    isLoading.value = false;
+    isLoading.value = false
   })
 
 const segments = ref([])
@@ -107,16 +107,9 @@ function displayTitle(segmentId: String) {
   return segmentTitle ? segmentTitle.displayName : ''
 }
 
-
 //bookmark fntn
-function bookMarked(data) {
-  const storedData = JSON.parse(localStorage.getItem('savedData')) || []
-  return storedData.some((savedData) => savedData.productId === data.productId)
-}
-
-
-function booked(event, data) {
-  event.preventDefault();
+function booked(event, data: any) {
+  event.preventDefault()
   const savedData = JSON.parse(localStorage.getItem('savedData')) || []
   const index = savedData.findIndex((item) => item.productId === data.productId)
 
@@ -133,18 +126,20 @@ function booked(event, data) {
     element.classList.toggle('bookmarked')
   })
 
-  const bookingIcon = event.currentTarget;
-  const currentBookmarked = bookMarked(data);
+  const bookingIcon = event.currentTarget
+  const currentBookmarked = bookMarked(data)
 
   if (currentBookmarked) {
-    bookingIcon.classList.add('bookmarked');
+    bookingIcon.classList.add('bookmarked')
   } else {
-    bookingIcon.classList.remove('bookmarked');
+    bookingIcon.classList.remove('bookmarked')
   }
- 
 }
 
-
+function bookMarked(data) {
+  const storedData = JSON.parse(localStorage.getItem('savedData')) || []
+  return storedData.some((savedData) => savedData.productId === data.productId)
+}
 
 //filtered contents
 const filterImage = ref(true)
@@ -160,6 +155,11 @@ function filtered() {
   filterImage.value = !filterImage.value
   if (!filterImage.value) {
     segments.value = savedData
+  }
+
+  // Show empty state if there are no saved data items
+  if (savedData.length === 0) {
+    showLabel.value = true
   }
 }
 
@@ -252,80 +252,69 @@ const searchData = computed(() => {
 
     <div class="contents">
       <div v-if="isLoading" class="loading-icon">
-        <img src="../assets/images/icons8-loading-64.png" alt="">
+        <img src="../assets/images/icons8-loading-24.png" alt="" />
       </div>
 
-       <div v-else>
-      <div v-for="item in searchData" class="content">
-        <div class="pic">
-          <img :src="displayImage(item.segmentId)" alt="${data.productName}" />
-        </div>
+      <div v-else>
+        <div v-for="item in searchData" class="content">
+          <div class="pic">
+            <img :src="displayImage(item.segmentId)" alt="${data.productName}" />
+          </div>
 
-        <div class="notes">
-          <router-link
-            :to="{
-              name: 'ProductDetails',
-              params: {
-                segmentId: displayTitle(item.segmentId),
-                segmentIcon: displayImage(item.segmentId),
-                segmentName: displayTitle(item.segmentId),
-                productName: item.productName,
-                description: item.description
-              }
-            }"
-            target="_blank"
-          >
-            <h6 :class="displayTitle(item.segmentId)">
-              {{ displayTitle(item.segmentId) }}
-            </h6>
-            <h2>
-              {{ item.productName }}
-            </h2>
+          <div class="notes">
+            <router-link
+              :to="{
+                name: 'ProductDetails',
+                params: {
+                  segmentId: displayTitle(item.segmentId),
+                  segmentIcon: displayImage(item.segmentId),
+                  segmentName: displayTitle(item.segmentId),
+                  productName: item.productName,
+                  description: item.description
+                }
+              }"
+              target="_blank"
+            >
+              <h6 :class="displayTitle(item.segmentId)">
+                {{ displayTitle(item.segmentId) }}
+              </h6>
+              <h2>
+                {{ item.productName }}
+              </h2>
 
-            <p>{{ item.description }}</p>
-          </router-link>
-        </div>
+              <p>{{ item.description }}</p>
+            </router-link>
+          </div>
 
-        <div v-if="showLabel" class="label">
-          <svg
-            @click="booked($event, item)"
-            :class="{ booked: bookMarked(item) }"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
-            />
-          </svg>
+          <div v-if="showLabel" class="label">
+            <svg
+              @click="booked($event, item)"
+              :class="{ booked: bookMarked(item) }"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"
+              />
+            </svg>
+          </div>
         </div>
       </div>
-    </div>
 
       <div v-if="searchQuery && searchData.length === 0" class="no-results">
-        <p>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
-            />
-          </svg>
+        <p>No matches to your query could be found. Try another search term.</p>
+      </div>
 
-          No matches to your query could be found. Try another search term.
-        </p>
+ <!-- Display empty state message -->
+      <div v-if="showLabel && searchData.length === 0 && !filterImage" class="no-saved">
+        <img src="../assets/images/icons8-empty-50.png" alt="">
+        <p>No saved data found.</p>
       </div>
     </div>
   </div>
